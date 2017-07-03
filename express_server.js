@@ -21,8 +21,10 @@ app.get("/", (req, res) => {
 
 
 app.post("/chart", (req, res) => {
-  let airport = req.body['airport']
-  console.log(airport);
+  let input = req.body['airport']
+  let airport = input.toUpperCase();
+  console.log(`----`);
+  console.log(`\n${airport}\n`);
 
   metarFetcher.getData(airport)
   .then(function(response) {
@@ -53,8 +55,8 @@ app.post("/chart", (req, res) => {
     // console.log(`####${proc}####`);
     console.log(`#   AIRPORT DIAGRAM (PDF)   #`);
     console.log(`${name} ${code}`);
-    console.log(`${revisedURL}`);
-});
+    console.log(`${revisedURL}\n`);
+  });
 
   res.redirect("/");
 
