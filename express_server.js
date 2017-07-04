@@ -5,10 +5,10 @@ const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 const airportDiagrams = require('airport-diagrams');
-var MetarFetcher = require('metar-taf').MetarFetcher;
-var TafFetcher = require('metar-taf').TafFetcher;
-var metarFetcher = new MetarFetcher();
-var tafFetcher = new TafFetcher();
+const MetarFetcher = require('metar-taf').MetarFetcher;
+const metarFetcher = new MetarFetcher();
+const TafFetcher = require('metar-taf').TafFetcher;
+const tafFetcher = new TafFetcher();
 
 
 app.listen(PORT, () => {
@@ -23,38 +23,37 @@ app.get("/", (req, res) => {
 app.post("/chart", (req, res) => {
   let input = req.body['airport']
   let airport = input.toUpperCase();
+
   console.log(`----`);
   console.log(`\n${airport}\n`);
 
   metarFetcher.getData(airport)
-  .then(function(response) {
+  .then((response) => {
     console.log(`#########`);
     console.log(`# METAR #`);
     console.log(response);
-  }, function(error) {
+  }), ((error) => {
     console.error(error);
   });
 
+
   tafFetcher.getData(airport)
-  .then(function(response) {
+  .then((response) => {
     console.log(`#########`);
     console.log(`#  TAF  #`);
     console.log(response);
-  }, function(error) {
+  }), ((error) => {
     console.error(error);
   });
 
   airportDiagrams.list(airport)
   .then(results => {
-    let name = (JSON.stringify(results[0]['airport'], null, 2));
-    let code = (JSON.stringify(results[0]['ident'], null, 2));
-    // let proc = (JSON.stringify(results[0]['procedure']['name'], null, 2));
-    let plateURL = (JSON.stringify(results[0]['procedure']['url'], null, 2));
-    revisedURL = plateURL.substring(1, plateURL.length - 17);
+    let result = results[0];
+    let plateURL = (result['procedure']['url']);
+    revisedURL = plateURL.substring(0, plateURL.length - 16);
     console.log(`#############################`);
-    // console.log(`####${proc}####`);
     console.log(`#   AIRPORT DIAGRAM (PDF)   #`);
-    console.log(`${name} ${code}`);
+    console.log(`${result['airport']} / ${result['ident']}`);
     console.log(`${revisedURL}\n`);
   });
 
