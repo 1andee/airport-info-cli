@@ -13,7 +13,7 @@ const TafFetcher = require('metar-taf').TafFetcher;
 const tafFetcher = new TafFetcher();
 
 app.listen(PORT, () => {
-  console.log(`Diagram server running on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 
 app.get("/", (req, res) => {
@@ -36,8 +36,9 @@ app.post("/chart", (req, res) => {
 
   metarFetcher.getData(airport)
   .then((response) => {
-    console.log(`#########`);
-    console.log(`# METAR #`);
+    console.log(`########`);
+    console.log(` METAR `);
+    console.log(`########`);
     console.log(response);
   }), ((error) => {
     console.error(error);
@@ -46,8 +47,9 @@ app.post("/chart", (req, res) => {
 
   tafFetcher.getData(airport)
   .then((response) => {
-    console.log(`#########`);
-    console.log(`#  TAF  #`);
+    console.log(`########`);
+    console.log(`  TAF  `);
+    console.log(`########`);
     console.log(response);
   }), ((error) => {
     console.error(error);
@@ -58,16 +60,18 @@ app.post("/chart", (req, res) => {
     let result = results[0];
     let plateURL = (result['procedure']['url']);
     revisedURL = plateURL.substring(0, plateURL.length - 16);
-    console.log(`#############################`);
-    console.log(`#   AIRPORT DIAGRAM (PDF)   #`);
-    console.log(`${result['airport']} / ${result['ident']}`);
+    console.log(`############################`);
+    console.log(`    AIRPORT DIAGRAM (PDF)   `);
+    console.log(` ${result['airport']} / ${result['ident']}`);
+    console.log(`############################`);
     console.log(`${revisedURL}\n`);
   })
   .then
   (notams(airport, { format: 'DOMESTIC' })
   .then(results => {
-    console.log(`#############################`);
-    console.log(`#          NOTAMS           #`);
+    console.log(`############################`);
+    console.log(`          NOTAMS           `);
+    console.log(`############################`);
     var notams = results[0]['notams'];
     notams.forEach((notam) => {
       console.log(notam);
