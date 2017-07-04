@@ -4,13 +4,13 @@ app.set("view engine", "ejs");
 const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+const icao = require('icao');
 const airportDiagrams = require('airport-diagrams');
 const notams = require('notams');
 const MetarFetcher = require('metar-taf').MetarFetcher;
 const metarFetcher = new MetarFetcher();
 const TafFetcher = require('metar-taf').TafFetcher;
 const tafFetcher = new TafFetcher();
-
 
 app.listen(PORT, () => {
   console.log(`Diagram server running on port ${PORT}`);
@@ -24,6 +24,12 @@ app.get("/", (req, res) => {
 app.post("/chart", (req, res) => {
   let input = req.body['airport']
   let airport = input.toUpperCase();
+
+  if (!icao[airport]) {
+    console.log("#####\nAirport not found");
+    console.log("Please try another search\n#####");
+    return;
+  } else {
 
   console.log(`----`);
   console.log(`\n${airport}\n`);
@@ -67,6 +73,8 @@ app.post("/chart", (req, res) => {
       console.log(notam);
     });
   }));
+
+}
 
   res.redirect("/");
 
