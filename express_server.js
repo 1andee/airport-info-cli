@@ -58,12 +58,15 @@ app.post("/chart", (req, res) => {
     console.log(`${revisedURL}\n`);
   })
   .then
-    (notams(airport, { format: 'DOMESTIC' })
-      .then(results => {
-        console.log(`#############################`);
-        console.log(`#          NOTAMS           #`);
-        console.log(results[0]['notams'])
-      }));
+  (notams(airport, { format: 'DOMESTIC' })
+  .then(results => {
+    console.log(`#############################`);
+    console.log(`#          NOTAMS           #`);
+    var notams = results[0]['notams'];
+    notams.forEach((notam) => {
+      console.log(notam);
+    });
+  }));
 
   res.redirect("/");
 
