@@ -31,54 +31,61 @@ app.post("/chart", (req, res) => {
     return;
   } else {
 
-  console.log(`----`);
-  console.log(`\n${airport}\n`);
+    console.log(`----`);
+    console.log(`\n${airport}\n`);
 
-  metarFetcher.getData(airport)
-  .then((response) => {
-    console.log(`########`);
-    console.log(` METAR `);
-    console.log(`########`);
-    console.log(response);
-  }), ((error) => {
-    console.error(error);
-  });
-
-
-  tafFetcher.getData(airport)
-  .then((response) => {
-    console.log(`########`);
-    console.log(`  TAF  `);
-    console.log(`########`);
-    console.log(response);
-  }), ((error) => {
-    console.error(error);
-  });
-
-  airportDiagrams.list(airport)
-  .then(results => {
-    let result = results[0];
-    let plateURL = (result['procedure']['url']);
-    revisedURL = plateURL.substring(0, plateURL.length - 16);
-    console.log(`############################`);
-    console.log(`    AIRPORT DIAGRAM (PDF)   `);
-    console.log(` ${result['airport']} / ${result['ident']}`);
-    console.log(`############################`);
-    console.log(`${revisedURL}\n`);
-  })
-  .then
-  (notams(airport, { format: 'DOMESTIC' })
-  .then(results => {
-    console.log(`############################`);
-    console.log(`          NOTAMS           `);
-    console.log(`############################`);
-    var notams = results[0]['notams'];
-    notams.forEach((notam) => {
-      console.log(notam);
+    metarFetcher.getData(airport)
+    .then((response) => {
+      console.log(`############################`);
+      console.log(`            METAR`);
+      console.log(`############################`);
+      console.log(response);
+    }), ((error) => {
+      console.error(error);
     });
-  }));
 
-}
+
+    tafFetcher.getData(airport)
+    .then((response) => {
+      console.log(`############################`);
+      console.log(`            TAF`);
+      console.log(`############################`);
+      console.log(response);
+    }), ((error) => {
+      console.error(error);
+    });
+
+    // Displays link to Airport Chart PDF if it's a U.S. airport
+    const geoCheck = (airport) => {
+      let firstChar = airport.substring(0, 1);
+      if (firstChar === 'K' || firstChar === 'P') {
+        airportDiagrams.list(airport)
+        .then(results => {
+          let result = results[0];
+          let plateURL = (result['procedure']['url']);
+          revisedURL = plateURL.substring(0, plateURL.length - 16);
+          console.log(`############################`);
+          console.log(`    AIRPORT DIAGRAM (PDF)`);
+          console.log(` ${result['airport']} / ${result['ident']}`);
+          console.log(`############################`);
+          console.log(`${revisedURL}\n`);
+        })
+      } else { return };
+    };
+    geoCheck(airport);
+
+    notams(airport, { format: 'DOMESTIC' })
+    .then(results => {
+      console.log(`############################`);
+      console.log(`           NOTAMS`);
+      console.log(`############################`);
+      var notams = results[0]['notams'];
+      notams.forEach((notam) => {
+        console.log(notam);
+      });
+    });
+
+  }
 
   res.redirect("/");
 
