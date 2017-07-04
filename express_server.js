@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 const airportDiagrams = require('airport-diagrams');
+const notams = require('notams');
 const MetarFetcher = require('metar-taf').MetarFetcher;
 const metarFetcher = new MetarFetcher();
 const TafFetcher = require('metar-taf').TafFetcher;
@@ -55,7 +56,14 @@ app.post("/chart", (req, res) => {
     console.log(`#   AIRPORT DIAGRAM (PDF)   #`);
     console.log(`${result['airport']} / ${result['ident']}`);
     console.log(`${revisedURL}\n`);
-  });
+  })
+  .then
+    (notams(airport, { format: 'DOMESTIC' })
+      .then(results => {
+        console.log(`#############################`);
+        console.log(`#          NOTAMS           #`);
+        console.log(results[0]['notams'])
+      }));
 
   res.redirect("/");
 
