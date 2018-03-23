@@ -1,4 +1,5 @@
 const PORT = process.env.PORT || 8080; // default port 8080
+const cfonts = require('cfonts');
 const readlineSync = require('readline-sync');
 const icao = require('icao');
 const airportDiagrams = require('airport-diagrams');
@@ -7,6 +8,16 @@ const MetarFetcher = require('metar-taf').MetarFetcher;
 const metarFetcher = new MetarFetcher();
 const TafFetcher = require('metar-taf').TafFetcher;
 const tafFetcher = new TafFetcher();
+
+cfonts.say('airport-info', {
+  font: 'chrome',
+  align: 'left',
+  colors: ['green'],
+  background: 'Black',
+  letterSpacing: 1,
+  lineHeight: 1,
+  space: true,
+});
 
 let input = readlineSync.question('Please enter an ICAO code: ');
 let airport = input.toUpperCase();
