@@ -1,21 +1,25 @@
 {
-  "name": "airport-thingy",
-  "version": "0.0.1",
-  "description": "A small side-project. Returns METAR, TAF, and airport diagram link in terminal window.",
-  "main": "index.ejs",
+  "name": "airport-info-cli",
+  "version": "0.0.2",
+  "description": "Return METAR, TAF, NOTAMS, and chart links in terminal window.",
   "scripts": {
-    "start": "node express_server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ian Duke",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1andee/airport-info-cli.git"
+  },
   "dependencies": {
-    "airport-diagrams": "^1.1.20",
+    "axios": "^0.18.0",
     "cfonts": "^1.2.0",
+    "cheerio": "^1.0.0-rc.2",
+    "colors": "^1.3.1",
     "express": "^4.16.3",
     "icao": "^1.0.1",
-    "metar-taf": "0.0.2",
-    "notams": "^1.1.12",
-    "readline-sync": "^1.4.9"
+    "readline-sync": "^1.4.9",
+    "terminal-procedures": "^0.3.13"
   }
 }
