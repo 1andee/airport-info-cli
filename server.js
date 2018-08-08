@@ -26,13 +26,23 @@ function getNotams(airport) {
   return axios.get(`https://pilotweb.nas.faa.gov/PilotWeb/notamRetrievalByICAOAction.do?method=displayByICAOs&reportType=RAW&formatType=DOMESTIC&retrieveLocId=${airport}&actionType=notamRetrievalByICAOs`)
 }
 
+function useNull() {
+  return {
+    data: 'NONE FOUND'
+  };
+}
+
 userPrompt = () => {
   let input = readlineSync.question('Please enter an ICAO code: ');
   let airport = input.toUpperCase();
 
   if (icao[airport]) {
 
-    axios.all([getMetar(airport), getTaf(airport), getNotams(airport)])
+    axios.all([
+        getMetar(airport).catch(useNull),
+        getTaf(airport).catch(useNull),
+        getNotams(airport).catch(useNull)
+      ])
       .then(axios.spread((metar, taf, notams) => {
 
         console.log(`\n############################`);
@@ -49,9 +59,14 @@ userPrompt = () => {
         console.log(`           NOTAMS`);
         console.log(`############################\n`);
         let rawNotamData = parse(notams.data);
-        rawNotamData[0].notams.forEach((notam) => {
-          console.log(notam);
-        });
+
+        if (rawNotamData[0].notams.length > 0) {
+          rawNotamData[0].notams.forEach((notam) => {
+            console.log(notam);
+          });
+        } else {
+        console.log('NONE FOUND\n');
+      }
       }))
       .then(() => {
         userPrompt();
