@@ -1,5 +1,5 @@
 # airport-info-cli
-A small project built with Node.js and Express.js that displays the METAR and TAF for a given airport along with links to the airport terminal procedures.
+A small project built with Node.js and Express.js that displays the METAR, TAF, and NOTAMs for a given airport .
 
 # installation
 1. Clone the repository.
@@ -8,4 +8,4 @@ A small project built with Node.js and Express.js that displays the METAR and TA
 4. Follow the prompts!
 
 # Screenshot
-!["Screenshot of airport-info-cli"](https://github.com/1andee/airport-thingy/blob/master/docs/screenshot.png)
+!["Screenshot of airport-info-cli"](https://raw.githubusercontent.com/1andee/airport-info-cli/master/docs/screenshot.png)
