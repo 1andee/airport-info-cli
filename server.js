@@ -19,7 +19,7 @@ function getMetar(airport) {
 }
 
 function getTaf(airport) {
-  return axios.get(`http://tgftp.nws.noaa.gov//data/forecasts/taf/stations/${airport}.TXT`);
+  return axios.get(`http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/${airport}.TXT`);
 }
 
 function getNotams(airport) {
